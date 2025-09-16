@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Sa'yo ❤️</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #ffccd5;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .envelope {
+    width: 250px;
+    height: 150px;
+    background: #ff4d6d;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+
+  .flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 150px;
+    background: #ff8095;
+    border-radius: 10px;
+    transform-origin: top;
+    transition: transform 1s;
+  }
+
+  .message {
+    display: none;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .message h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    position: relative;
+    height: 60px;
+  }
+
+  button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    cursor: pointer;
+    touch-action: manipulation;
+    z-index: 1;
+  }
+
+  .yes { background: #4CAF50; color: white; }
+  .no { background: #f44336; color: white; position: absolute; }
+  .closeBtn { background: #ff80aa; color: white; position: fixed; bottom: 20px; right: 20px; z-index: 10; }
+
+  .arrow {
+    position: absolute;
+    font-size: 24px;
+    color: #ff0000;
+    animation: bounce 0.5s;
+    z-index: 0;
+  }
+
+  .messageText {
+    position: absolute;
+    font-size: 16px;
+    color: #ff0000;
+    font-weight: bold;
+    animation: fadeOut 2s forwards;
+  }
+
+  .heart, .confetti {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 3s linear forwards;
+  }
+
+  .confetti {
+    font-size: 18px;
+    color: #ffff00;
+  }
+
+  .finalMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: #ff1a75;
+    display: none;
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(-10px); }
+    50% { transform: translateY(10px); }
+    100% { transform: translateY(0); }
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-200px); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="envelope" class="envelope">
+  <div class="flap"></div>
+  <span style="color:white;font-size:18px;">Tap to open ❤️</span>
+</div>
+
+<div id="message" class="message">
+  <h2>Pwede ba kita ligawan? 💌</h2>
+  <div class="buttons">
+    <button class="yes" id="yesBtn">Oo</button>
+    <button class="no" id="noBtn">Hindi</button>
+  </div>
+</div>
+
+<div id="finalMessage" class="finalMessage">
+  Salamat my bby Eya :3<br>
+  I will do my best to capture your heart and be mine ❤️<br>
+  <span id="romanticMsg"></span>
+</div>
+
+<button id="closeBtn" class="closeBtn" style="display:none;">Close ❤️</button>
+
+<!-- Audio files -->
+<audio id="loveSound" src="romantic.mp3"></audio>
+<audio id="animeNo" src="anime_no.mp3"></audio>
+
+<script>
+  const envelope = document.getElementById("envelope");
+  const flap = document.querySelector(".flap");
+  const message = document.getElementById("message");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const finalMessage = document.getElementById("finalMessage");
+  const romanticMsg = document.getElementById("romanticMsg");
+  const closeBtn = document.getElementById("closeBtn");
+  const loveSound = document.getElementById("loveSound");
+  const animeNo = document.getElementById("animeNo");
+
+  let heartInterval;
+
+  // Open envelope
+  envelope.addEventListener("click", () => {
+    flap.style.transform = "rotateX(180deg)";
+    setTimeout(() => {
+      envelope.style.display = "none";
+      message.style.display = "block";
+    }, 800);
+  });
+
+  // "No" button
+  noBtn.addEventListener("click", () => {
+    animeNo.currentTime = 0;
+    animeNo.play();
+
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 200);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    const arrow = document.createElement("div");
+    arrow.classList.add("arrow");
+    arrow.style.left = (yesBtn.offsetLeft - 30 + Math.random()*20) + "px";
+    arrow.style.top = (yesBtn.offsetTop - 30 + Math.random()*20) + "px";
+    arrow.innerHTML = "➡";
+    document.body.appendChild(arrow);
+
+    const text = document.createElement("div");
+    text.classList.add("messageText");
+    text.style.left = (yesBtn.offsetLeft + Math.random()*50 - 20) + "px";
+    text.style.top = (yesBtn.offsetTop - 50 + Math.random()*20) + "px";
+    text.innerHTML = "Click mo na Oo! Galit ako 😡";
+    document.body.appendChild(text);
+    setTimeout(() => text.remove(), 2000);
+  });
+
+  // "Oo" button
+  yesBtn.addEventListener("click", () => {
+    animeNo.pause();
+    animeNo.currentTime = 0;
+
+    loveSound.play();
+    message.style.display = "none";
+    finalMessage.style.display = "block";
+    closeBtn.style.display = "block"; // show Close button
+    romanticMsg.innerHTML = "Ako ay magiging pinakamabuting ka-partner mo, aalagaan kita at palaging mamahalin ❤️";
+
+    heartInterval = setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = Math.random() * window.innerHeight + "px";
+      heart.innerHTML = "❤️";
+      document.body.appendChild(heart);
+
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.top = Math.random() * window.innerHeight + "px";
+      confetti.innerHTML = "✨";
+      document.body.appendChild(confetti);
+    }, 300);
+  });
+
+  // Close button
+  closeBtn.addEventListener("click", () => {
+    clearInterval(heartInterval); // stop hearts/confetti
+    loveSound.pause();
+    loveSound.currentTime = 0;
+    finalMessage.innerHTML = ":3";
+    closeBtn.style.display = "none";
+  });
+</script>
+</body>
+</html>
